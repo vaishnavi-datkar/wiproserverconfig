@@ -1,4 +1,0 @@
-spring.application.name=logdemo
-logging.file.name=logs/logdemo.log
-logging.file.path=logs/
-logging.level.root=WARN

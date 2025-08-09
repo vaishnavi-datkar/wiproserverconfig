@@ -1,5 +1,0 @@
-package com.wipro.entity.payment_ms.controller;
-
-public class PaymentController {
-
-}

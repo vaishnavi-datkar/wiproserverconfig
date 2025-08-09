@@ -1,5 +1,0 @@
-package com.wipro.carregistrationdetailsms.repository;
-
-public interface CarRepository {
-
-}
