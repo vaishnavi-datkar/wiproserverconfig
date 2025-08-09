@@ -1,0 +1,22 @@
+package com.wipro.Orderms.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Table(name = "Orders")
+@Data
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "Order_mode")
+    private String OrderMode;
+
+    private double amount;
+
+    @Column(name = "description")
+    private String OrderDescription;
+}

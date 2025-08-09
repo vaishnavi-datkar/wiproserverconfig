@@ -1,0 +1,7 @@
+package com.wipro.entity.payment_ms.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaymentRepo extends JpaRepository<T, ID> {
+
+}
