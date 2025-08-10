@@ -1,0 +1,22 @@
+package com.wipro.entity.payment_ms.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Table(name = "payments")
+@Data
+public class Payment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "payment_mode")
+    private String paymentMode;
+
+    private double amount;
+
+    @Column(name = "description")
+    private String paymentDescription;
+}
