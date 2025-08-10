@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="wizardPage">
+		<list key="groupId">
+			<item value="com.wipro.mvc"/>
+			<item value="com.wipro"/>
+			<item value="Demo2"/>
+			<item value="ServerDemo1"/>
+			<item value="Demo1"/>
+		</list>
+		<list key="name">
+		</list>
+		<list key="artifactId">
+			<item value="Demomvc"/>
+			<item value="ServletDemo3"/>
+			<item value="Demo2"/>
+			<item value="serd"/>
+			<item value="Demo1"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+	<section name="MavenModuleWizardParentPage">
+		<list key="moduleName">
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArchetypePage">
+		<item key="catalog" value="internal"/>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="Maven2ProjectWizardArchifactPage">
+		<list key="package">
+			<item value="com.wipro.aop"/>
+			<item value="com.wipro.bean.springversion"/>
+			<item value="springdemo.bean"/>
+			<item value="springdemo.sd"/>
+			<item value="panhibernet.springdemo"/>
+			<item value="panhibernet.info"/>
+			<item value="hibernetdemo.operation"/>
+			<item value="hiberDemo.hibernetDemo"/>
+			<item value="hiber"/>
+		</list>
+		<list key="groupId">
+			<item value="com.wipro"/>
+			<item value="com.wipro.bean"/>
+			<item value="springdemo"/>
+			<item value="panhibernet"/>
+			<item value="hibernetdemo"/>
+			<item value="hiberDemo"/>
+		</list>
+		<list key="artifactId">
+			<item value="aop"/>
+			<item value="springversion"/>
+			<item value="bean"/>
+			<item value="sd"/>
+			<item value="springdemo"/>
+			<item value="info"/>
+			<item value="operation"/>
+			<item value="hibernetDemo"/>
+			<item value="hiber"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardArtifactPage">
+		<list key="groupId">
+		</list>
+		<list key="name">
+		</list>
+		<list key="artifactId">
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+		<list key="version">
+			<item value="0.0.1-SNAPSHOT"/>
+		</list>
+	</section>
+	<section name="MavenProjectWizardLocationPage">
+		<list key="location">
+			<item value="D:\Work\Trainig\EclipseCode\bean\resource1"/>
+			<item value="D:\Work\Trainig\EclipseCode\hibernetDemo\src\main\java\hiberDemo\hibernetDemo\PanTest.java"/>
+			<item value="D:\Work\Trainig\EclipseCode\Day8\src"/>
+			<item value="D:\Work\Trainig\EclipseCode\SqlConnection\src\com\wipro\sql\DemoSql.java"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.ui.internal.wizards.CustomArchetypeDialog">
+	</section>
+	<section name="MavenProjectImportWizardPage">
+		<list key="rootDirectory">
+			<item value="D:\Work\Trainig\EclipseCode\letsgo"/>
+			<item value="D:\Work\Trainig\EclipseCode\logdemo"/>
+			<item value="D:\Work\Trainig\EclipseCode\carregistrationdetails-ms"/>
+			<item value="D:\Work\Trainig\EclipseCode\auth"/>
+			<item value="D:\Work\Trainig\EclipseCode\user-ms"/>
+			<item value="D:\Work\Trainig\EclipseCode\notification-ms"/>
+			<item value="D:\Work\Trainig\EclipseCode\user-ms\user-ms"/>
+			<item value="D:\Work\Trainig\EclipseCode\notification"/>
+			<item value="D:\Work\Trainig\EclipseCode\user"/>
+			<item value="D:\Work\Trainig\EclipseCode\configserver"/>
+			<item value="D:\Work\Trainig\EclipseCode\apigateway"/>
+			<item value="D:\Work\Trainig\EclipseCode\serverdiscovery"/>
+			<item value="D:\Work\Trainig\EclipseCode\servicediscovery"/>
+			<item value="D:\Work\Trainig\EclipseCode\orderms\orderms"/>
+			<item value="D:\Work\Trainig\EclipseCode\orderms"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+</section>
