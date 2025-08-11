@@ -1,0 +1,14 @@
+package com.wipro.Orderms.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.wipro.Orderms.entity.Order;
+
+public interface OrderService {
+    void save(Order Order);
+    List<Order> findAll();
+	void deleteById(int id);
+	
+	Optional<Order> findById(int id);
+}
