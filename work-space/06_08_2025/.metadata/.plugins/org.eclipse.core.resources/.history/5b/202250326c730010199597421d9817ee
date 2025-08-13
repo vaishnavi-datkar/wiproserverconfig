@@ -1,0 +1,61 @@
+package com.wipro.userms.service.impl;
+
+import com.wipro.userms.entity.User;
+import com.wipro.userms.dto.Notification;
+import com.wipro.userms.repo.UserRepo;
+import com.wipro.userms.service.UserService;
+import com.wipro.userms.service.NotificationConnectService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+import java.util.List;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    UserRepo UserRepo;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
+    NotificationConnectService notificationConnectService;
+
+    @Override
+    @CircuitBreaker(name = "User-cb", fallbackMethod = "handleFallBack")
+    public void save(User user) {
+        user.setuserStatus("I");
+        UserRepo.save(user); // insert
+
+        Notification notification = new Notification();
+        notification .setuserId(User.getId());
+        notification .setnotificationId(User.getUserValue()); // keeping your field
+        notification .setnotificationStatus(true);
+
+        ResponseEntity<Notification> response = notification ConnectService.saveNotification Data(notification );
+
+        if (response.getStatusCode() == HttpStatusCode.valueOf(200)) {
+            User.setUserStatus("P");
+        }
+
+        UserRepo.save(User); // update
+    }
+
+    @Override
+    public List<User> findAll() {
+        return UserRepo.findAll();
+    }
+
+    // Fallback method must match parameters of save() + Throwable
+    public void handleFallBack(User User, Throwable t) {
+        System.out.println("--System is down--");
+        User.setUserStatus("C");
+        UserRepo.save(User);
+    }
+}

@@ -1,0 +1,208 @@
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    margin: 0;
+}
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header */
+.main-header {
+    background-color: #343a40; /* The actual dark color */
+    color: #f8f9fa;            /* The actual light color */
+    padding: 1rem;             /* The amount of space */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-header .logo {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-nav li {
+    margin-left: 1.5rem;
+}
+
+.main-nav a {
+    color: #f8f9fa;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: #007bff;
+}
+
+
+.bolg-section {
+    background-image: url('https://via.placeholder.com/1920x600.png?text=Your+Background+Image+Here');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.main-content {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+/* Main Content & Sidebar Layout using CSS Grid */
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to one column on smaller screens */
+    gap: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.main-content {
+    order: 2; /* Puts main content after sidebar on small screens */
+}
+
+.sidebar {
+    order: 1; /* Puts sidebar before main content on small screens */
+}
+
+.blog-section {
+    margin-bottom: 2rem;
+}
+
+.blog-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 1rem;
+    border-radius: 8px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+    margin: 2rem auto;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar */
+.card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.author-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 1rem;
+}
+
+.recent-posts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-posts li {
+    margin-bottom: 0.5rem;
+}
+
+.recent-posts a {
+    color: #333;
+    text-decoration: none;
+}
+
+.recent-posts a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    color: #6c757d;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #333;
+}
+
+/* Footer */
+.main-footer {
+    background-color: #343a40;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.main-footer .social-links {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.main-footer .social-links a {
+    color: #f8f9fa;
+}
+
+/* Media Queries for Responsiveness */
+@media (min-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 2fr 1fr; /* Two columns on larger screens */
+        gap: 3rem;
+    }
+    
+    .main-content {
+        order: 1; /* Main content first on larger screens */
+    }
+
+    .sidebar {
+        order: 2; /* Sidebar second on larger screens */
+    }
+}

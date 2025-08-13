@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox 2x2 Grid</title>
+    <style>
+        /* Outer container holding all rows */
+        .flex-box {
+            display: flex;
+            flex-direction: row; /* stack rows vertically */
+            gap: 20px; /* space between rows */
+            padding: 15%;
+            background-color: lightblue;
+        }
+
+        /* Each row container */
+        .box-1 {
+            display: flex;
+            flex-wrap: wrap; /* allow items to wrap to next line */
+            gap: 10px;
+            background-color: lightsalmon;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Each individual image box */
+        .box {
+            flex: 0 0 48%; /* 2 items per row */
+            background-color: white;
+            border: 2px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /* Images inside the box */
+        .box img {
+            width: 60%;
+            height: 400px;
+            object-fit: cover; /* keep image ratio */
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align:center;">Flexbox 2x2 Image Grid</h1>
+
+<div class="flex-box">
+    <!-- Row 1 -->
+    <div class="box-1">
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="box-1">
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="box-1">
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+        <div class="box"><img src="C:\Users\Vaishanvi Datkar\Downloads\15c224c52a789dd610e826eafbdda12d.jpg" alt="Image"></div>
+    </div>
+</div>
+
+</body>
+</html>
+
