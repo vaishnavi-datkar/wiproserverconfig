@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz App with Radio Buttons</title>
+</head>
+<body>
+    <h2>Simple Quiz</h2>
+    <div id="quizContainer">
+        <p id="question"></p>
+        <form id="quizForm">
+            <div id="options"></div>
+        </form>
+        <p id="feedback"></p>
+        <button onclick="submitAnswer()">Submit Answer</button>
+        <button onclick="previousQuestion()">Previous Question</button>
+        <button onclick="nextQuestion()">Next Question</button>
+
+        <p>Score: <span id="score">0</span></p>
+    </div>
+
+    <script>
+        let quizData = [
+            {
+                question: "Which river is known as the longest river in the world?",
+                options: ["Nile", "Amazon", "Ganga", "Kaveri"],
+                correct: "Nile"
+            },
+            {
+                question: " Which is the largest ocean on Earth?",
+                options: ["Atlantic Ocean", " Indian Ocean", "Pacific Ocean", "Arctic Ocean"],
+                correct: "Pacific Ocean"
+            },
+            {
+                question: "Who wrote 'Hamlet'?",
+                options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"],
+                correct: "William Shakespeare"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            let currentQuestion = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = currentQuestion.question;
+
+            let optionsHtml = "";
+            currentQuestion.options.forEach(option => {
+                optionsHtml += `
+                    <label>
+                        <input type="radio" name="answer" value="${option}"> ${option}
+                    </label><br>
+                `;
+            });
+
+            document.getElementById("options").innerHTML = optionsHtml;
+            document.getElementById("feedback").innerText = "";
+        }
+
+        function submitAnswer() {
+            let selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("Please select an option!");
+                return;
+            }
+
+            let correctAnswer = quizData[currentQuestionIndex].correct;
+            if (selectedOption.value === correctAnswer) {
+                document.getElementById("feedback").innerText = "Correct!";
+                score++;
+                document.getElementById("score").innerText = score;
+            } else {
+                document.getElementById("feedback").innerText = "Wrong!";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quizContainer").innerHTML = `<h3>Quiz Over!</h3><p>Your Score: ${score}</p>`;
+            }
+        }
+         function previousQuestion() {
+            currentQuestionIndex--;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quizContainer").innerHTML = `<h3>Quiz Over!</h3><p>Your Score: ${score}</p>`;
+            }
+        }
+
+        // Load first question
+        loadQuestion();
+    </script>
+</body>
+</html>
