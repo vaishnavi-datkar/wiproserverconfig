@@ -1,0 +1,14 @@
+ body {
+        text-align: center;
+            font-family: Arial, sans-serif;
+
+        }
+        
+        img {
+            width: 50x;
+            height: 50px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            
+        }
+    

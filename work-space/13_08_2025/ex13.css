@@ -1,0 +1,87 @@
+body {
+    background-color: #f0f0f0;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.quiz-container {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 2px 2px 5px #aaa;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+#options-form {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+}
+
+/* Style for each option (label and checkbox) */
+.option-label {
+    display: block;
+    margin: 10px 0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.option-label input {
+    margin-right: 10px;
+}
+
+.feedback-correct {
+    color: green;
+    font-weight: bold;
+}
+
+.feedback-wrong {
+    color: red;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button#restart-btn {
+    display: block;
+    margin: 20px auto 0 auto;
+    background-color: green;
+    border-color: green;
+}
+
+button#restart-btn:hover {
+    background-color: darkgreen;
+}
