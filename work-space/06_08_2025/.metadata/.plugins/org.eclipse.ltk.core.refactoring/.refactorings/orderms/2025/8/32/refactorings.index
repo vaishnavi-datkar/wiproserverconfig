@@ -1,0 +1,9 @@
+1754291511632	Rename package 'com.wipro.paymentms'
+1754291581225	Rename package 'com.wipro.paymentms.controller'
+1754291617089	Rename package 'com.wipro.paymentms.entity'
+1754291644203	Rename package 'com.wipro.paymentms.repo'
+1754291665841	Rename package 'com.wipro.paymentms.service'
+1754291686022	Rename package 'com.wipro.paymentms.service.impl'
+1754292323651	Rename package 'com.wipro.entity.payment_ms'
+1754298535679	Move compilation unit
+1754305907605	Delete element

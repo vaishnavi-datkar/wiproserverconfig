@@ -1,0 +1,14 @@
+package com.wipro.Userms.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Payment {
+    private double paymentId;
+    private int UserId;
+    private boolean paymentStatus;
+}

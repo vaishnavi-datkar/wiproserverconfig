@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="ex13.css">
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginform">
+        <label for="email">Email:</label>
+        <input type="text" id="email" onblur="validateEmail()">
+        <span id="emailerror" class="error"></span>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" onblur="validatePassword()">
+        <span id="passworderror" class="error"></span>
+
+        <button type="button" onclick="handleLogin()">Login</button>
+    </form>
+</div>
+    <script src="ex13.js"></script>
+</body>
+</html>
