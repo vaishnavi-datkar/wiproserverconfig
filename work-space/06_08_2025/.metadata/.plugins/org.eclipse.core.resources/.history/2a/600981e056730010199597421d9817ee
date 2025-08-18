@@ -1,0 +1,5 @@
+package com.wipro.notification.controller;
+
+public class NotificationController {
+
+}

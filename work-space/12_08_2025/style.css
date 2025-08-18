@@ -1,0 +1,16 @@
+*{
+    color: blue;
+    
+}
+/* group selector*/
+h1, p{
+    text-align: center;
+    color: plum;
+   
+}
+/* class selector*/
+#special{
+    color: red;
+     background-color: blanchedalmond;
+}
+

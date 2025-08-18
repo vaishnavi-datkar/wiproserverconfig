@@ -1,0 +1,14 @@
+package com.wipro.userms.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Notification {
+    private double notificationId;
+    private int UserId;
+    private boolean notificationStatus;
+}

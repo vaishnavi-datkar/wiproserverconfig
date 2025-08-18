@@ -1,0 +1,57 @@
+package com.wipro.orderms.service.impl;
+
+import com.wipro.orderms.entity.Order;
+import com.wipro.orderms.dto.PaymentDTO;
+import com.wipro.orderms.repo.OrderRepo;
+import com.wipro.orderms.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+
+    @Autowired
+    private OrderRepo orderRepo;
+
+    @Override
+    public void save(Order order) {
+        // Step 1: Set status as Initiated
+        order.setStatus("I");
+        orderRepo.save(order);
+
+        // Step 2: Call Payment MS
+        RestTemplate rest = new RestTemplate();
+        String url = "http://localhost:9011/payment";
+
+        PaymentDTO paymentReq = new PaymentDTO();
+        paymentReq.setOrderId(order.getOrderId());
+        paymentReq.setPaymentStatus(false);
+
+        try {
+            ResponseEntity<PaymentDTO> paymentResp =
+                    rest.postForEntity(url, paymentReq, PaymentDTO.class);
+
+            if (paymentResp.getStatusCode() == HttpStatus.OK &&
+                paymentResp.getBody() != null &&
+                paymentResp.getBody().isPaymentStatus()) {
+                order.setStatus("P"); // Paid
+            } else {
+                order.setStatus("C"); // Cancelled
+            }
+        } catch (Exception e) {
+            order.setStatus("C");
+        }
+
+        // Step 3: Save updated status
+        orderRepo.save(order);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderRepo.findAll();
+    }
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strudent registration</title>
+</head>
+<body>
+    <h1>Student Registration Form</h1>
+    <form>
+        Roll No : <input type="text" name="rollno"><br><br>
+        Student name:
+        <input type="text" name="firstname" placeholder="Firstname">
+        <input type="text" name="lastname" placeholder="Lastname"><br>
+
+        Father's name:<input type="text" name="fathername"><br><br>
+
+        Date of birth:
+        <input type="text" name="day" placeholder="day">
+        <input type="text" name="month" placeholder="month">
+        <input type="text" name="year" placeholder="year">(DD-MM-YYYY)
+    <br><br>
+    MobileNo:
+         <input type="text" name="countrycode" value="+91" size="3">
+        <input type="text" name="mobile"><br><br>
+      Email id:<input type="email" name="email"><br>
+      Password:<input type="password" name="password"><br><br>
+        <label for="Gender"></label>
+        <input type="radio" name="gender" value="male"> Male
+        <input type="radio" name="gender" value="female"> Female<br>
+        <label>Department :</label><br>
+         <input type="checkbox"> CSE
+        <input type="checkbox" > IT
+        <input type="checkbox" > ECE
+        <input type="checkbox" > Civil
+        <input type="checkbox"> Mech<br>
+          <label>Course :</label><br>
+          <select name="course">
+            <option value="btech">B.Tech</option>
+            <option value="mtech">M.Tech</option>
+            <option value="bsc">B.Sc</option>
+            <option value="msc">M.Sc</option>
+        </select><br><br>
+           <label>Student photo :</label><br>
+        <input type="file" name="photo"><br><br>
+
+        <label>City :</label><br>
+        <input type="text" name="city"><br>
+
+        <label>Address :</label><br>
+        <textarea name="address" rows="4" cols="30"></textarea><br>
+
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
