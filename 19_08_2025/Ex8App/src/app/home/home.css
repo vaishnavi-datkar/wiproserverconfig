@@ -1,0 +1,52 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 50px;
+  background-color: aliceblue;
+  border-radius: 8px;
+  font-size: 30px;  
+}
+
+.card {
+  border: 1px solid #280909;
+  border-radius: 8px;
+  padding: 40px;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #c24343;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1.1em;
+}
+
+.mb-3 {
+  margin-bottom: 15px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.0em;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}

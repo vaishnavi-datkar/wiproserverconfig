@@ -1,0 +1,11 @@
+.app1 {
+  color: green;
+  padding: 10px;
+  border: 2px solid green;
+}
+
+.app2 {
+  color: blue;
+  padding-bottom: 80px;
+  border: 2px solid blue;
+}

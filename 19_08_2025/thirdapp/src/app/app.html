@@ -1,0 +1,21 @@
+<!-- <div [ngClass]="'app1'"></div>
+   <h1>Using String ....</h1>
+ <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores!</p> -->
+ <!-- <div  [ngClass]="['app1', 'app2']">
+<h1>Using Array ....</h1>
+ <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores!</p> -->
+<!-- <div [ngClass]="{'app1': flag1, 'app2': flag2}">
+ <h1>Using Object ....</h1>
+ <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores!</p> -->
+
+ <!-- ex-3
+<div [ngClass]="getNgClass()">
+  This text is styled based on getNgClass() result.
+</div> -->
+
+<!-- ex-4 -->
+<!-- <div [ngStyle]="{'color': color1, 'font-size': fontSize1}"> -->
+  <div [ngStyle]="{'color': flag1 ? 'blue' : 'green','font-size': fontSize1,
+      'background-color': 'lightyellow'}"> 
+    <h1>Using ngStyle</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
