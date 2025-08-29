@@ -1,0 +1,21 @@
+<div class="task-list-container">
+  <h2>Task List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Task Description</th>
+        <th>Category</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of tasks">
+        <td>{{ t.description }}</td>
+        <td>{{ t.category }}</td>
+        <td>
+           <button class="btn-delete" (click)="removeTask(t)">delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

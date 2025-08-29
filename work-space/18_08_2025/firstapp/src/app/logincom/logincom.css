@@ -1,0 +1,9 @@
+.login-container{
+    display: flex;
+    justify-content: center;
+    color: black;
+  text-align: left;
+  font-size: 20px; 
+}
+
+

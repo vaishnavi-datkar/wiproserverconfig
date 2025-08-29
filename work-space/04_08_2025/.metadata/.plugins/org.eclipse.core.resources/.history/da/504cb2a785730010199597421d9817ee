@@ -1,0 +1,32 @@
+package com.wipro.carregistrationdetailsms.entity;
+
+import java.io.Serializable;
+import jakarta.persistence.*;
+
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+@EntityScan
+public class Car implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String make;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "registration_id", referencedColumnName = "id")
+    private CarRegistrationDetail registrationDetail;
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+
+    public CarRegistrationDetail getRegistrationDetail() { return registrationDetail; }
+    public void setRegistrationDetail(CarRegistrationDetail registrationDetail) { this.registrationDetail = registrationDetail; }
+}
+
+}

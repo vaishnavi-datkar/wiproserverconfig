@@ -1,0 +1,19 @@
+<!-- @if (flag) {
+  <span>Flag true</span>
+} @else {
+  <span>Flag false</span>
+}
+
+<input type="checkbox" (change)="toggle()">
+<label>Toggle flag</label> -->
+<h2>Country List Example</h2>
+
+<select>
+  @for (list of dropdownList; track list) {
+    <option value="select country">{{ list }}</option>
+  }
+</select>
+
+<br><br>
+
+<button (click)="loadCountries()">Select Country</button>

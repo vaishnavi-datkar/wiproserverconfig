@@ -1,0 +1,10 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let fruit of fruits">
+      <app-display-list
+        [fruit]="fruit"
+        (btnClick)="removeFruit($event)">
+      </app-display-list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.pad{
+    padding-left: 80px;
+    padding-right: 30px;
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+
+.brdr{
+    border: 5px solid plum;
+
+}
+.mrgn{
+    margin: 10px 20px 30px 40px;
+}
