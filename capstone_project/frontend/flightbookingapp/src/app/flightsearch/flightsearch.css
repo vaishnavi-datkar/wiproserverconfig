@@ -1,0 +1,209 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dark .page-container {
+  background-color: #111827;
+  color: #f9fafb;
+}
+.card {
+  max-width: 56rem;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  padding: 2.5rem;
+}
+.dark .card {
+  background-color: #1f2937;
+}
+.header-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.header-icon {
+  height: 2.5rem;
+  width: 2.5rem;
+  color: #a09bf3;
+}
+.dark .header-icon {
+  color: #a5b4fc;
+}
+.header-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #9995e4;
+}
+.dark .header-title {
+  color: #a5b4fc;
+}
+.header-subtitle {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #4b5563;
+}
+.dark .header-subtitle {
+  color: #d1d5db;
+}
+.form {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+@media (min-width: 768px) {
+  .grid-layout {
+    grid-template-columns: 1fr min-content 1fr;
+    gap: 1rem;
+  }
+}
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+.dark .form-label {
+  color: #d1d5db;
+}
+.form-input {
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-color: #d1d5db;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  transition-duration: 150ms;
+}
+.dark .form-input {
+  background-color: #374151;
+}
+.form-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #9698f0;
+  border-color: #9b9ce8;
+}
+.suggestion-list {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  margin-top: 0.25rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 12rem;
+  overflow-y: auto;
+}
+.dark .suggestion-list {
+  background-color: #374151;
+}
+.suggestion-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.suggestion-item:hover {
+  background-color: #eef2ff;
+}
+.dark .suggestion-item:hover {
+  background-color: #46e596;
+}
+.swap-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+}
+@media (min-width: 768px) {
+  .swap-button-container {
+    align-self: center;
+    margin-top: 0;
+  }
+}
+.swap-button {
+  padding: 0.5rem;
+  background-color: #e5e7eb;
+  color: #374151;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition-duration: 150ms;
+  transform: rotate(0deg);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.dark .swap-button {
+  color: #d1d5db;
+}
+.swap-button:hover {
+  background-color: #d1d5db;
+}
+.swap-button:focus {
+  box-shadow: 0 0 0 2px #a1a2f1;
+}
+.icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+.date-input-container {
+  margin-top: 1.5rem;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.search-button {
+  width: 15%;
+  padding: 0.75rem 2rem;
+  background-color: #8985d8;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition-property: background-color, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.search-button:hover {
+  background-color: #9890eb;
+  transform: scale(1.05);
+}
+.search-button:focus {
+  box-shadow: 0 0 0 2px #8586db;
+}
+.message-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #fef3c7;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #92400e;
+}
+.dark .message-box {
+  background-color: #55340b;
+  color: #fcd34d;
+}

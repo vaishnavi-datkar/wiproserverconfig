@@ -1,0 +1,346 @@
+<div class="container">
+        <!-- No Data Fallback Screen -->
+        <div *ngIf="!source || !destination" class="search-container">
+            <div style="text-align: center; color: #6b7280;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+                <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">No Search Data</h3>
+                <p style="margin-bottom: 1.5rem;">Please return to the search page to look for flights.</p>
+                <button (click)="goToSearch()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+                    Go to Search
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Results Screen with Filter Sidebar -->
+        <div *ngIf="currentView === 'results' && source && destination" class="main-container">
+            <!-- Filter Sidebar -->
+            <div class="filters-sidebar">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">
+                    <h3 style="font-weight: bold; font-size: 1.125rem;">Applied Filters</h3>
+                    <button style="font-size: 0.875rem; color: #3b82f6; font-weight: 500; background: none; border: none; cursor: pointer;" (click)="clearAllFilters()">CLEAR ALL</button>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <div *ngIf="appliedFilters.length > 0" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <span *ngFor="let filter of appliedFilters" class="filter-tag">
+                            {{ filter.label }}
+                            <button (click)="removeAppliedFilter(filter.value)">&times;</button>
+                        </span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="font-weight: bold; font-size: 1.125rem;">Popular Filters</h3>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" (click)="toggleNonStopFilter()">
+                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" [checked]="nonStopFilter" style="margin-right: 0.5rem;">
+                                <span>Non Stop</span>
+                            </label>
+                            <span style="font-size: 0.875rem; color: #6b7280;">₹{{ getMinPrice('nonStop') }}</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" (click)="toggleIndigoFilter()">
+                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" [checked]="indigoFilter" style="margin-right: 0.5rem;">
+                                <span>IndiGo</span>
+                            </label>
+                            <span style="font-size: 0.875rem; color: #6b7280;">₹{{ getMinPrice('IndiGo') }}</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" (click)="toggleMorningFilter()">
+                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" [checked]="morningFilter" style="margin-right: 0.5rem;">
+                                <span>Morning Departures</span>
+                            </label>
+                            <span style="font-size: 0.875rem; color: #6b7280;">₹{{ getMinPrice('morning') }}</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" (click)="toggleEveningFilter()">
+                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" [checked]="eveningFilter" style="margin-right: 0.5rem;">
+                                <span>Evening Departures</span>
+                            </label>
+                            <span style="font-size: 0.875rem; color: #6b7280;">₹{{ getMinPrice('evening') }}</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" (click)="toggleAirIndiaFilter()">
+                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" [checked]="airIndiaFilter" style="margin-right: 0.5rem;">
+                                <span>Air India</span>
+                            </label>
+                            <span style="font-size: 0.875rem; color: #6b7280;">₹{{ getMinPrice('airIndia') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Container -->
+            <div class="results-container">
+                <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Flights from {{ source }} to {{ destination }}</h2>
+                <div style="margin-bottom: 1rem; font-size: 0.875rem; color: #6b7280;">
+                    Showing {{ flights.length }} results for {{ departureDate }}.
+                </div>
+                
+                <div *ngIf="flights.length > 0; else noFlights">
+                    <div *ngFor="let flight of flights" class="flight-card">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <div>
+                                <span style="font-size: 1.125rem; font-weight: 600; color: #4f46e5;">{{ flight.airline }}</span>
+                                <span style="font-size: 0.875rem; color: #6b7280; margin-left: 0.5rem;">{{ flight.flightNumber }}</span>
+                            </div>
+                            <span style="font-size: 0.75rem; padding: 0.25rem 0.5rem; background-color: #dbeafe; color: #1e40af; border-radius: 9999px;">{{ flight.stopType }}</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <div>
+                                <span style="font-size: 1.5rem; font-weight: bold;">{{ flight.departureTime }}</span>
+                                <span style="display: block; font-size: 0.875rem; color: #6b7280;">{{ flight.source }}</span>
+                            </div>
+                            
+                            <div style="text-align: center; color: #9ca3af; margin: 0 1rem;">
+                                <span style="font-size: 0.75rem;">{{ flight.duration }}</span>
+                                <div style="margin: 0.25rem 0;">✈️</div>
+                                <span style="font-size: 0.75rem;">{{ flight.stopType }}</span>
+                            </div>
+                            
+                            <div>
+                                <span style="font-size: 1.5rem; font-weight: bold;">{{ flight.arrivalTime }}</span>
+                                <span style="display: block; font-size: 0.875rem; color: #6b7280;">{{ flight.destination }}</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <span style="font-size: 1.5rem; font-weight: bold; color: #059669;">₹{{ flight.price }}</span>
+                                <span style="display: block; font-size: 0.75rem; color: #6b7280;">per person</span>
+                            </div>
+                            <button (click)="selectFlight(flight)" class="select-button">Select Flight</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <ng-template #noFlights>
+                    <div style="background-color: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); text-align: center; color: #6b7280; font-weight: 500; margin-top: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">✈️</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No Flights Available</h3>
+                        <p>No flights available matching your criterion</p>
+                    </div>
+                </ng-template>
+
+                <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+                    <button type="button" (click)="returnToSearch()" class="search-button">
+                        Return to Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Screen -->
+        <div *ngIf="currentView === 'booking'" class="booking-form">
+            <h3 style="font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 1.5rem;">Passenger Details</h3>
+            
+            <!-- Selected Flight Summary -->
+            <div *ngIf="selectedFlight" class="flight-details-summary">
+                <h4 style="font-weight: 600; margin-bottom: 0.75rem;">Selected Flight</h4>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <p style="font-weight: 600;">{{ selectedFlight.source }}  ᯓ  ✈︎  ᯓ  {{ selectedFlight.destination }}</p>
+                        <p style="font-size: 0.875rem; color: #6b7280;">{{ selectedFlight.airline }} | {{ selectedFlight.flightNumber }}</p>
+                        <p style="font-size: 0.75rem; color: #9ca3af;">{{ selectedFlight.departureTime }} - {{ selectedFlight.arrivalTime }}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="font-size: 1.25rem; font-weight: bold; color: #3b82f6;">₹{{ selectedFlight.price }}</p>
+                        <p style="font-size: 0.75rem; color: #6b7280;">per person</p>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+            
+            <form (ngSubmit)="proceedToPayment()">
+                <div class="form-group">
+                    <label for="passengerName">Full Name *</label>
+                    <input type="text" id="passengerName" [(ngModel)]="bookingDetails.passengerName" name="passengerName" required placeholder="Enter full name as per ID">
+                </div>
+                
+                <div class="form-group">
+                    <label for="passengerEmail">Email Address *</label>
+                    <input type="email" id="passengerEmail" [(ngModel)]="bookingDetails.passengerEmail" name="passengerEmail" required placeholder="Enter email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="passengerPhone">Phone Number *</label>
+                    <input type="tel" id="passengerPhone" [(ngModel)]="bookingDetails.passengerPhone" name="passengerPhone" required placeholder="Enter 10-digit phone number" maxlength="10">
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" (click)="returnToResults()" class="btn-secondary">
+                        Back to Results
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        Proceed to Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Payment Screen -->
+        <div *ngIf="currentView === 'payment'" class="payment-form">
+            <h3 style="font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 1.5rem;">Payment Details</h3>
+            
+            <!-- Booking Summary -->
+            <div class="ticket-info">
+                <h4 style="font-weight: 600; margin-bottom: 0.5rem;">Booking Summary</h4>
+                <p style="margin: 0.25rem 0;">Booking ID: {{ bookingId }}</p>
+                <p style="margin: 0.25rem 0;">{{ selectedFlight?.source }} → {{ selectedFlight?.destination }}</p>
+                <p style="margin: 0.25rem 0;">{{ selectedFlight?.airline }} - {{ selectedFlight?.flightNumber }}</p>
+                <p style="margin: 0.25rem 0;">Passenger: {{ bookingDetails.passengerName }}</p>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
+            <!-- Payment Method Toggle -->
+            <div class="payment-method-toggle">
+                <button type="button" [class.active]="paymentMethod === 'card'" (click)="paymentMethod = 'card'">
+                    Credit/Debit Card
+                </button>
+                <button type="button" [class.active]="paymentMethod === 'upi'" (click)="paymentMethod = 'upi'">
+                    UPI
+                </button>
+            </div>
+
+            <!-- Card Payment Form -->
+            <form *ngIf="paymentMethod === 'card'" (ngSubmit)="processPayment()">
+                <div class="form-group">
+                    <label for="cardHolderName">Card Holder Name *</label>
+                    <input type="text" id="cardHolderName" [(ngModel)]="cardHolderName" name="cardHolderName" required placeholder="Name on card">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardNumber">Card Number *</label>
+                    <input type="text" id="cardNumber" [value]="cardNumber" (input)="onCardNumberInput($event)" name="cardNumber" required placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date *</label>
+                        <input type="text" id="expiryDate" [value]="expiryDate" (input)="onExpiryDateInput($event)" name="expiryDate" required placeholder="MM/YY" maxlength="5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cvv">CVV *</label>
+                        <input type="text" id="cvv" [(ngModel)]="cvv" name="cvv" required placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                
+                <div class="price-breakdown">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Base Fare:</span>
+                        <span>₹{{ getFlightPrice() }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Taxes & Fees:</span>
+                        <span>₹{{ getTaxesAndFees() }}</span>
+                    </div>
+                    <hr style="margin: 0.5rem 0;">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>Total Amount:</span>
+                        <span>₹{{ getTotalAmount() }}</span>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" (click)="returnToBooking()" class="btn-secondary">
+                        Back
+                    </button>
+                    <button type="submit" [disabled]="paymentProcessing" class="btn-primary">
+                        <span *ngIf="paymentProcessing" class="loading-spinner"></span>
+                        {{ paymentProcessing ? 'Processing...' : 'Pay Now' }}
+                    </button>
+                </div>
+            </form>
+
+            <!-- UPI Payment Form -->
+            <form *ngIf="paymentMethod === 'upi'" (ngSubmit)="processPayment()">
+                <div class="form-group">
+                    <label for="upiId">UPI ID *</label>
+                    <input type="text" id="upiId" [(ngModel)]="upiId" name="upiId" required placeholder="yourname@paytm">
+                </div>
+                
+                <div class="price-breakdown">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Base Fare:</span>
+                        <span>₹{{ getFlightPrice() }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Taxes & Fees:</span>
+                        <span>₹{{ getTaxesAndFees() }}</span>
+                    </div>
+                    <hr style="margin: 0.5rem 0;">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>Total Amount:</span>
+                        <span>₹{{ getTotalAmount() }}</span>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" (click)="returnToBooking()" class="btn-secondary">
+                        Back
+                    </button>
+                    <button type="submit" [disabled]="paymentProcessing" class="btn-primary">
+                        <span *ngIf="paymentProcessing" class="loading-spinner"></span>
+                        {{ paymentProcessing ? 'Processing...' : 'Pay with UPI' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Payment Success Screen -->
+        <div *ngIf="paymentStatus === 'success' && showBookingSuccess" class="success-message">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+            <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Booking Confirmed!</h3>
+            <p style="margin-bottom: 0.5rem;">Your booking has been successfully confirmed.</p>
+            <p style="margin-bottom: 1.5rem;">Booking ID: <strong>{{ bookingId }}</strong></p>
+            
+            <div style="background-color: rgba(255, 255, 255, 0.2); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <p style="margin: 0.25rem 0;"><strong>Flight:</strong> {{ selectedFlight?.flightNumber }}</p>
+                <p style="margin: 0.25rem 0;"><strong>Route:</strong> {{ selectedFlight?.source }} → {{ selectedFlight?.destination }}</p>
+                <p style="margin: 0.25rem 0;"><strong>Date:</strong> {{ departureDate }}</p>
+                <p style="margin: 0.25rem 0;"><strong>Time:</strong> {{ selectedFlight?.departureTime }} - {{ selectedFlight?.arrivalTime }}</p>
+                <p style="margin: 0.25rem 0;"><strong>Passenger:</strong> {{ bookingDetails.passengerName }}</p>
+                <p style="margin: 0.25rem 0;"><strong>Total Paid:</strong> ₹{{ getTotalAmount() }}</p>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button (click)="downloadTicket()" style="padding: 0.75rem 1.5rem; background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid white; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+                    Download E-Ticket
+                </button>
+                <button (click)="startNewBooking()" style="padding: 0.75rem 1.5rem; background-color: white; color: #059669; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+                    New Booking
+                </button>
+            </div>
+        </div>
+
+        <!-- Payment Failed Screen -->
+        <div *ngIf="paymentStatus === 'failed'" class="error-screen">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+            <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Payment Failed</h3>
+            <p style="margin-bottom: 0.5rem;">Unfortunately, your payment could not be processed.</p>
+            <p style="margin-bottom: 1.5rem;">Please try again with different payment details or contact your bank.</p>
+            <p style="margin-bottom: 1.5rem;">Booking ID: <strong>{{ bookingId }}</strong></p>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button (click)="returnToBooking()" style="padding: 0.75rem 1.5rem; background-color: #dc2626; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+                    Try Again
+                </button>
+                <button (click)="startNewBooking()" style="padding: 0.75rem 1.5rem; background-color: #6b7280; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+                    Start Over
+                </button>
+            </div>
+        </div>
+    </div>

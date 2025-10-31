@@ -1,0 +1,115 @@
+<div class="page-container">
+  <div class="card">
+    <header class="text-center mb-10">
+      <div class="header-icon-container">
+        <h1 class="header-title">Book Your Flight with SkyPath </h1>
+      </div>
+      <p class="header-subtitle">Your journey starts here. Find the best flights.</p>
+    </header>
+
+    <form class="form" (ngSubmit)="searchFlights()">
+      <div class="grid-layout">
+        <!-- Source Input with Autocomplete -->
+        <div class="relative">
+          <label for="source" class="form-label">Source</label>
+          <input 
+            id="source" 
+            type="text" 
+            placeholder="e.g., NYC" 
+            class="form-input"
+            [(ngModel)]="source" 
+            (ngModelChange)="onCityInput($event, 'source')" 
+            (focus)="sourceFocused = true; destinationFocused = false;"
+            (blur)="clearSuggestions()"
+            name="source" 
+            autocomplete="off"
+            required>
+          
+          <!-- Autocomplete suggestions for Source -->
+          @if(suggestionsSource.length > 0 && sourceFocused) {
+            <ul class="suggestion-list">
+              @for (suggestion of suggestionsSource; track suggestion) {
+                <li 
+                  class="suggestion-item"
+                  (mousedown)="selectSuggestion(suggestion, 'source')"
+                >
+                  {{ suggestion }}
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Swap Button -->
+        <div class="swap-button-container">
+          <button 
+            type="button" 
+            (click)="swapLocations()"
+            class="swap-button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Destination Input with Autocomplete -->
+        <div class="relative">
+          <label for="destination" class="form-label">Destination</label>
+          <input 
+            id="destination" 
+            type="text" 
+            placeholder="e.g., LAX" 
+            class="form-input"
+            [(ngModel)]="destination" 
+            (ngModelChange)="onCityInput($event, 'destination')" 
+            (focus)="destinationFocused = true; sourceFocused = false;"
+            (blur)="clearSuggestions()"
+            name="destination" 
+            autocomplete="off"
+            required>
+
+          <!-- Autocomplete suggestions for Destination -->
+          @if(suggestionsDestination.length > 0 && destinationFocused) {
+            <ul class="suggestion-list">
+              @for (suggestion of suggestionsDestination; track suggestion) {
+                <li 
+                  class="suggestion-item"
+                  (mousedown)="selectSuggestion(suggestion, 'destination')"
+                >
+                  {{ suggestion }}
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+      
+      <!-- Departure Date Input -->
+      <div class="date-input-container">
+        <label for="departureDate" class="form-label">Departure Date</label>
+        <input 
+          id="departureDate" 
+          type="date" 
+          class="form-input"
+          [(ngModel)]="departureDate" 
+          name="departureDate" 
+          required>
+      </div>
+      
+      <div class="flex-center">
+        <button 
+          type="submit" 
+          class="search-button">
+          Search
+        </button>
+      </div>
+    </form>
+
+    <!-- Placeholder for search results or messages -->
+    @if(message) {
+      <div class="message-box">
+        {{ message }}
+      </div>
+    }
+  </div>
+</div>
