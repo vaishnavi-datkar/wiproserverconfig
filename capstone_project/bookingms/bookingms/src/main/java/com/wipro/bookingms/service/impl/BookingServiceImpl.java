@@ -1,97 +1,136 @@
 package com.wipro.bookingms.service.impl;
+
+import com.wipro.bookingms.dto.BookingRequest;
+import com.wipro.bookingms.dto.PaymentRequest;
 import com.wipro.bookingms.entity.Booking;
+import com.wipro.bookingms.kafka.PaymentProducer;
 import com.wipro.bookingms.repo.BookingRepository;
 import com.wipro.bookingms.service.BookingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import java.time.LocalDate;
+
 import java.util.List;
 
 /**
- * Service class for handling all booking-related business logic.
- * This version uses RestTemplate for inter-service communication.
+ * Implementation of BookingService
+ * Contains actual business logic for booking operations
+ * @Service - Marks this as a Spring service component
  */
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    private final RestTemplate restTemplate;
-    private final BookingRepository bookingRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    // Dependencies
+    private final RestTemplate restTemplate;           // For calling other microservices
+    private final BookingRepository bookingRepository; // For database operations
+    private final PaymentProducer paymentProducer;     // For sending messages to Kafka
 
-    // The name of the FlightDataMs service as registered in Eureka.
-    private static final String FLIGHT_DATA_MS_NAME = "FLIGHTDATAMS";
-
+    /**
+     * Constructor injection - Spring automatically injects dependencies
+     * @Autowired is optional on constructors (Spring 4.3+)
+     */
     @Autowired
-    public BookingServiceImpl(RestTemplate restTemplate, BookingRepository bookingRepository, KafkaTemplate<String, String> kafkaTemplate) {
+    public BookingServiceImpl(RestTemplate restTemplate, 
+                             BookingRepository bookingRepository, 
+                             PaymentProducer paymentProducer) {
         this.restTemplate = restTemplate;
         this.bookingRepository = bookingRepository;
-        this.kafkaTemplate = kafkaTemplate;
+        this.paymentProducer = paymentProducer;
     }
 
     /**
-     * Searches for flights using RestTemplate to call the FlightDataMs.
-     * @param source The source city.
-     * @param destination The destination city.
-     * @param flightDate The flight date.
-     * @return A list of flight results.
+     * Creates a new booking with INITIATED status
+     * Generates unique booking ID using current timestamp
      */
-    @Override // This annotation ensures the method signature matches the interface.
-    public List<Object> searchFlights(String source, String destination, LocalDate flightDate) {
-        // Construct the URL to call the FlightDataMs service.
-        // The URL uses the service name from Eureka.
-        String url = UriComponentsBuilder.fromHttpUrl("http://" + FLIGHT_DATA_MS_NAME)
-                .path("/flights/search")
-                .queryParam("source", source)
-                .queryParam("destination", destination)
-                .queryParam("flightDate", flightDate.toString())
-                .toUriString();
-
-        // Make the GET request and get the response as a List.
-        List<Object> result = restTemplate.getForObject(url, List.class);
-        return result;
+    @Override
+    public Booking createBooking(BookingRequest request) {
+        // Create new booking entity
+        Booking booking = new Booking();
+        
+        // Generate unique booking ID: BK + timestamp
+        // Example: BK1730889234567
+        booking.setBookingId("BK" + System.currentTimeMillis());
+        
+        // Set flight details
+        booking.setFlightId(request.getFlightId());
+        booking.setSource(request.getSource());
+        booking.setDestination(request.getDestination());
+        booking.setTravelDate(request.getTravelDate());
+        
+        // Set passenger details
+        booking.setPassengerName(request.getPassengerName());
+        booking.setPassengerEmail(request.getPassengerEmail());
+        booking.setPassengerPhone(request.getPassengerPhone());
+        
+        // Set pricing details
+        booking.setBasePrice(request.getBasePrice());
+        booking.setTaxes(request.getTaxes());
+        booking.setTotalAmount(request.getTotalAmount());
+        
+        // Set initial status - payment not yet done
+        booking.setStatus("INITIATED");
+        
+        // Save to database and return
+        // JPA will automatically set id, createdAt, updatedAt
+        return bookingRepository.save(booking);
     }
 
     /**
-     * Initiates a new booking, saves it to the database, and sends a payment request to Kafka.
-     * @param flightId The ID of the flight to book.
-     * @param amount The amount to pay.
-     * @param paymentMode The payment method.
-     * @return The saved Booking entity.
+     * Initiates payment by sending request to Kafka Topic T1
+     * PaymentMS will consume from T1 and process payment
      */
-    @Override // This annotation ensures the method signature matches the interface.
-    public Booking initiateBookingAndPayment(String flightId, double amount, String paymentMode) {
-        // Create a new booking entry with "initiated" status
-        Booking newBooking = new Booking();
-        newBooking.setFlightId(flightId);
-        newBooking.setFlightDate(LocalDate.now());
-        newBooking.setBookingDate(LocalDate.now());
-        newBooking.setAmount(amount);
-        newBooking.setPaymentMode(paymentMode);
-        newBooking.setStatus("initiated");
-
-        // Save the booking to the database
-        Booking savedBooking = bookingRepository.save(newBooking);
-
-        // Send a payment request to the Kafka topic T1
-        String message = String.format("{\"bookingId\": %d, \"amount\": %.2f}", savedBooking.getBookingId(), amount);
-        kafkaTemplate.send("T1", savedBooking.getBookingId().toString(), message);
-
-        System.out.println("Initiated booking ID: " + savedBooking.getBookingId() + " and sent payment request.");
-
-        return savedBooking;
+    @Override
+    public void initiatePayment(PaymentRequest paymentRequest) {
+        // Find booking by booking ID
+        Booking booking = bookingRepository.findByBookingId(paymentRequest.getBookingId())
+                .orElseThrow(() -> new RuntimeException("Booking not found with ID: " 
+                                                       + paymentRequest.getBookingId()));
+        
+        // Update booking with payment method (CARD or UPI)
+        booking.setPaymentMethod(paymentRequest.getPaymentMethod());  // FIXED: Was setPaymentMode
+        bookingRepository.save(booking);
+        
+        // Send payment request to Kafka Topic T1 (payment-request-topic)
+        // PaymentMS is listening to this topic
+        paymentProducer.sendPaymentRequest(paymentRequest);
+        
+        System.out.println("Payment request sent to Kafka for booking: " 
+                         + paymentRequest.getBookingId());
     }
 
     /**
-     * Kafka listener that consumes payment status updates from the 'T2' topic.
-     * @param message The JSON message string containing the payment status.
+     * Retrieves a specific booking by its booking ID
+     * @throws RuntimeException if booking not found
      */
-    @KafkaListener(topics = "T2", groupId = "payment-status-group")
-    public void listenForPaymentStatus(String message) {
-        System.out.println("Received payment status on topic 'T2': " + message);
+    @Override
+    public Booking getBookingById(String bookingId) {  // FIXED: Method name was getBookingId
+        return bookingRepository.findByBookingId(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found with ID: " + bookingId));
+    }
+
+    /**
+     * Gets all bookings from database
+     * Used for admin panel or booking history
+     */
+    @Override
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
+    /**
+     * Searches for flights by calling FlightDataMS via Eureka
+     * Uses @LoadBalanced RestTemplate for service discovery
+     */
+    @Override
+    public Object searchFlights(String source, String destination, String date) {
+        // Service name from Eureka - LoadBalancer resolves to actual IP:PORT
+        // "FLIGHTDATAMS" -> "http://192.168.1.36:9090"
+        String flightDataUrl = "http://FLIGHTDATAMS/api/flights/search?source=" 
+                             + source + "&destination=" + destination + "&date=" + date;
+        
+        // Make HTTP GET request to FlightDataMS
+        // Returns JSON converted to Object
+        return restTemplate.getForObject(flightDataUrl, Object.class);
     }
 }

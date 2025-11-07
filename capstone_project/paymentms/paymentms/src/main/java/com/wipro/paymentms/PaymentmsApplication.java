@@ -10,6 +10,11 @@ public class PaymentmsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PaymentmsApplication.class, args);
+		System.out.println("========================================");
+        System.out.println("PaymentMS Started Successfully!");
+        System.out.println("Port: 9092");
+        System.out.println("Swagger UI: http://localhost:9092/swagger-ui.html");
+        System.out.println("========================================");
 	}
 
 }
