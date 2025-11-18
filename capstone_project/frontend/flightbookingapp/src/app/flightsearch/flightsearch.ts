@@ -1,42 +1,54 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router} from '@angular/router';
-import { Flight } from '../flight';
+import { Router } from '@angular/router';
+import { FlightService } from '../flightservice';
+
 
 @Component({
   selector: 'app-flightsearch',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './flightsearch.html',
-   changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './flightsearch.css'
 })
-export class Flightsearch  implements OnInit {
-source: string = '';
+export class Flightsearch implements OnInit {
+  // Form fields
+  source: string = '';
   destination: string = '';
   departureDate: string = '';
   message: string = '';
+  isLoading: boolean = false; // Loading state for API call
   
+  // Injected services
   router = inject(Router);
+  flightService = inject(FlightService); // ← NEW: Inject FlightService
 
+  // Autocomplete suggestions
   suggestionsSource: string[] = [];
   suggestionsDestination: string[] = [];
   sourceFocused: boolean = false;
   destinationFocused: boolean = false;
 
-  private allCities = ['Pune', 'Delhi', 'Mumbai', 'Akola', 'Kolkata', 'Chennai', 'Bangalore', 'Hyderabad', 'Ahmedabad', 'Amravati'];
+  // Available cities
+  private allCities = [
+    'Pune', 'Delhi', 'Mumbai', 'Akola', 'Kolkata', 
+    'Chennai', 'Bangalore', 'Hyderabad', 'Ahmedabad', 'Amravati'
+  ];
   
   ngOnInit(): void {
-    // Set a default date on component initialization
+    // Set today's date as default and minimum
     this.departureDate = new Date().toISOString().substring(0, 10);
   }
 
+ 
   isFormValid(): boolean {
     return this.source.trim().length > 0 && 
            this.destination.trim().length > 0 &&
            this.departureDate.trim().length > 0;
   }
 
+  
   swapLocations(): void {
     const currentSource = this.source;
     this.source = this.destination;
@@ -44,12 +56,15 @@ source: string = '';
     this.clearSuggestions();
   }
 
+ 
   onCityInput(value: string, inputType: 'source' | 'destination'): void {
     const normalizedValue = value.trim().toLowerCase();
+    
     if (normalizedValue.length >= 3) {
       const filteredCities = this.allCities.filter(city => 
         city.toLowerCase().startsWith(normalizedValue)
       );
+      
       if (inputType === 'source') {
         this.suggestionsSource = filteredCities;
       } else {
@@ -64,6 +79,7 @@ source: string = '';
     }
   }
 
+  
   selectSuggestion(city: string, inputType: 'source' | 'destination'): void {
     if (inputType === 'source') {
       this.source = city;
@@ -84,86 +100,60 @@ source: string = '';
   }
 
   searchFlights(): void {
-    if (this.isFormValid()) {
-      // Navigate to booking-list with search parameters
-      this.router.navigate(['/booking-list'], {
-        state: {
-          source: this.source,
-          destination: this.destination,
-          departureDate: this.departureDate,
+    // Validate form
+    if (!this.isFormValid()) {
+      this.message = 'Please fill in all required information.';
+      return;
+    }
+
+    // Clear previous messages and show loading
+    this.message = '';
+    this.isLoading = true;
+
+    console.log('========================================');
+    console.log('Searching flights from BACKEND API');
+    console.log('Source:', this.source);
+    console.log('Destination:', this.destination);
+    console.log('Date:', this.departureDate);
+    console.log('========================================');
+
+    // Call backend API through FlightService
+    this.flightService.searchFlights(this.source, this.destination, this.departureDate)
+      .subscribe({
+        // Success callback - API returned data
+        next: (flights: string | any[]) => {
+          console.log('✅ Flights received from backend:', flights);
+          console.log('Number of flights:', flights ? flights.length : 0);
+          this.isLoading = false;
+          
+          if (flights && flights.length > 0) {
+            // Navigate to booking-list with real flight data
+            this.router.navigate(['/booking-list'], {
+              state: {
+                flights: flights,               // ← Real data from backend!
+                source: this.source,
+                destination: this.destination,
+                departureDate: this.departureDate,
+              }
+            });
+          } else {
+            // No flights found for this route/date
+            this.message = 'No flights available for the selected route and date.';
+          }
+        },
+        
+        // Error callback - API call failed
+        error: (error: { status: any; message: any; url: any; }) => {
+          console.error('❌ Error searching flights:', error);
+          console.error('Error details:', {
+            status: error.status,
+            message: error.message,
+            url: error.url
+          });
+          
+          this.isLoading = false;
+          this.message = 'Error searching flights. Please check if backend is running and try again.';
         }
       });
-    } else {
-      this.message = 'Please fill in all required information.';
-    }
-  }
-
-  private generateMockFlights(): Flight[] {
-    const departureHour = (time: string): number => {
-      const hour = parseInt(time.split(':')[0]);
-      const period = time.includes('PM') ? 12 : 0;
-      return hour === 12 ? period : hour + period;
-    };
-
-    const isMorning = (time: string): boolean => {
-      const hour = departureHour(time);
-      return hour >= 6 && hour < 12;
-    };
-
-    const isLate = (time: string): boolean => {
-      const hour = departureHour(time);
-      return hour >= 18;
-    };
-
-    return [
-      {
-        id: 'FL123',
-        flightNumber: 'FL123',
-        airline: 'Gemini Air',
-        departureTime: '08:00 AM',
-        arrivalTime: '11:30 AM',
-        price: '7120',
-        source: this.source,
-        destination: this.destination,
-        departureHour: departureHour('08:00 AM'),
-        stopType: 'Non-stop',
-        isNonStop: true,
-        isMorning: isMorning('08:00 AM'),
-        isLate: isLate('08:00 AM'),
-        duration: '3h 30m'
-      },
-      {
-        id: 'FL456',
-        flightNumber: 'FL456',
-        airline: 'Indigo Airlines',
-        departureTime: '01:00 PM',
-        arrivalTime: '04:30 PM',
-        price: '4310',
-        source: this.source,
-        destination: this.destination,
-        departureHour: departureHour('01:00 PM'),
-        stopType: 'Non-stop',
-        isNonStop: true,
-        isMorning: isMorning('01:00 PM'),
-        isLate: isLate('01:00 PM'),
-        duration: '3h 30m'
-      },
-      {
-        id: 'FL789',
-        flightNumber: 'FL789',
-        airline: 'Air INDIA',
-        departureTime: '06:00 PM',
-        arrivalTime: '09:30 PM',
-        price: '5620',
-        source: this.source,
-        destination: this.destination,
-        departureHour: departureHour('06:00 PM'),
-        stopType: '1 Stop',
-        isNonStop: false,
-        isMorning: isMorning('06:00 PM'),
-        isLate: isLate('06:00 PM'),
-        duration: '3h 30m'
-      },
-    ];
   }
 }
